@@ -106,3 +106,5 @@ Middle East Technical University, Graduate School of Informatics. The
 ARAS400K dataset is the work of M. Caglar (2026, [Zenodo](https://zenodo.org/records/18890661)).
 RemoteCLIP weights from Liu et al., 2024 (HuggingFace
 [`chendelong/RemoteCLIP`](https://huggingface.co/chendelong/RemoteCLIP)).
+
+GitHub: https://github.com/sceran/aras-multimodal-attention-landcover-classification
