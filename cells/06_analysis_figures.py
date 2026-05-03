@@ -183,9 +183,11 @@ x = np.arange(len(group_names))
 w = 0.35
 fig, ax = plt.subplots(figsize=(5.5, 2.8))
 b1 = ax.bar(x - w/2, vanilla_means, w, yerr=vanilla_stds,
-            label="Vanilla CLIP", color="#7f7f7f", capsize=3)
+            label="Vanilla CLIP", color="#7f7f7f", capsize=3,
+            hatch='////', edgecolor='black', linewidth=0.6)
 b2 = ax.bar(x + w/2, rc_means, w, yerr=rc_stds,
-            label="RemoteCLIP", color="#2ca02c", capsize=3)
+            label="RemoteCLIP", color="#2ca02c", capsize=3,
+            hatch='\\\\\\\\', edgecolor='black', linewidth=0.6)
 ax.set_xticks(x)
 ax.set_xticklabels(group_names)
 ax.set_ylabel("mAP (mean over caption strategies)")
@@ -222,8 +224,10 @@ w = 0.35
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.5, 2.8), sharey=False)
 
 # Path A F1
-ax1.bar(x - w/2, img_pathA, w, label="image-only", color="#bdbdbd")
-ax1.bar(x + w/2, ca_pathA,  w, label="best CA (hyb-qwn)", color="#2c7fb8")
+ax1.bar(x - w/2, img_pathA, w, label="image-only", color="#bdbdbd",
+        hatch='////', edgecolor='black', linewidth=0.5)
+ax1.bar(x + w/2, ca_pathA,  w, label="best CA (hyb-qwn)", color="#2c7fb8",
+        hatch='\\\\\\\\', edgecolor='black', linewidth=0.5)
 ax1.set_xticks(x); ax1.set_xticklabels(CLASSES, rotation=30, ha="right")
 ax1.set_ylabel("Val F1 (per class)")
 ax1.set_title("Path A: per-class F1")
@@ -232,8 +236,10 @@ ax1.grid(axis="y", linestyle="--", alpha=0.3)
 ax1.legend(loc="lower right", fontsize=8)
 
 # Path B IoU
-ax2.bar(x - w/2, img_pathB, w, label="image-only seg", color="#bdbdbd")
-ax2.bar(x + w/2, ca_pathB,  w, label="best CA seg (hyb-qwn)", color="#d95f0e")
+ax2.bar(x - w/2, img_pathB, w, label="image-only seg", color="#bdbdbd",
+        hatch='////', edgecolor='black', linewidth=0.5)
+ax2.bar(x + w/2, ca_pathB,  w, label="best CA seg (hyb-qwn)", color="#d95f0e",
+        hatch='\\\\\\\\', edgecolor='black', linewidth=0.5)
 ax2.set_xticks(x); ax2.set_xticklabels(CLASSES, rotation=30, ha="right")
 ax2.set_ylabel("Val IoU (per class)")
 ax2.set_title("Path B: per-class IoU")

@@ -1,0 +1,78 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+
+\title{Cross-Attention vs.\ Late Fusion for Multi-Modal\\Remote Sensing Scene Classification}
+
+\author{\IEEEauthorblockN{Süleyman Ceran}
+\IEEEauthorblockA{Middle East Technical University\\
+Graduate School of Informatics\\
+DI 725 -- Transformers and Attention-Based Deep Networks}}
+
+\maketitle
+
+\section{Literature Survey}
+
+Vision-language models (VLMs) represent an emerging paradigm for simultaneously understanding both images and text through joint representation of visual and textual information within a single embedding space; this is commonly achieved through contrastive learning~\cite{radford2021clip}. VLMs have been gaining increasing attention in the field of remote sensing (RS). Wen et al.~\cite{wen2024vlm} provided a comprehensive survey identifying ``cross-modal fusion'' as one of the largest open challenges. Liu et al.\ developed RemoteCLIP~\cite{liu2024remoteclip}; it was the first CLIP model designed specifically for RS. The authors showed that domain-adapted contrastive pretraining outperforms vanilla CLIP by up to 6.39\% in zero-shot classification accuracy. Li et al.~\cite{li2023rsclip} further validated contrastive vision-language alignment for RS, demonstrating strong few-shot scene classification with RS-CLIP. Most recently, multimodal language models (MLLMs) like EarthGPT~\cite{zhang2024earthgpt} and RingMoGPT~\cite{wang2025ringmogpt} have successfully integrated many different types of RS tasks---including those related to captioning, VQA, grounding, and change detection---into a single framework that projects visual tokens into LLM token spaces through instruction tuning.
+
+An important structural design decision when building models in this way is how to fuse or combine the two separate representations of visual data and textual data. Bazi et al.~\cite{bazi2022bimodal} demonstrated that cross-modal attention outperformed unimodal methods for RS visual question answering, while Lan et al.~\cite{lan2024grounding} demonstrated that the use of text tokens as cross-attention queries over multiscale visual features greatly improved grounding accuracy. SegCLIP~\cite{zhang2024segclip} achieves strong segmentation results by fusing CLIP text embeddings with image features, and MetaSegNet~\cite{wang2024metasegnet} demonstrates improved generalization through metadata-derived textual prompts. However, there are limited studies comparing the merits of cross-attention vs.\ late fusion approaches for RS scene-level tasks. Moreover, little is known about how the approach used to generate captions will affect the overall fusion performance. Recent research has confirmed that the source and quality of the captions generated can greatly impact the effectiveness of multi-modal models~\cite{chen2024sharegpt4v}.
+
+\section{Project Proposal}
+
+\textbf{Research Question:} How effective is cross-attention-based multi-modal fusion compared to late fusion for remote sensing scene classification using vision transformers and LLM-generated captions?
+
+\textbf{Dataset:} The ARAS400K dataset~\cite{caglar2026aras400k} provides 10,000 satellite images with segmentation masks (7 land cover classes), composition percentages, and captions from three LLM strategies: \textit{vision-only} (image only), \textit{text-only} (composition percentages only), and \textit{hybrid} (image + percentages). Scene labels are derived by assigning the dominant land cover class when it exceeds 50\%, yielding 8 categories.
+
+\textbf{Methods:} Two fusion strategies are compared. \textit{Late fusion} concatenates independently encoded image and text CLS embeddings before an MLP classifier. \textit{Cross-attention fusion} uses text tokens as queries attending over image patch tokens via multi-head cross-attention. Both share a frozen CLIP backbone; only fusion and classification layers are trained. Performance is evaluated using accuracy and macro F1-score across 5 caption types $\times$ 2 fusion strategies, plus a vision-only baseline (11 conditions).
+
+\section{Proof of Concept}
+
+A proof-of-concept notebook validates the proposed pipeline end-to-end. Pre-trained CLIP (ViT-B/32) serves as the frozen backbone encoder. Since CLIP's vision and text encoders produce different embedding dimensions, the cross-attention model includes projection layers to map both modalities into a shared space. Both fusion architectures were verified through forward pass validation, confirming valid outputs and computable gradients. A mini training experiment on 500 samples over 5 epochs achieved 81\% validation accuracy, well above the 12.5\% random chance baseline for 8 classes, confirming that the pipeline can learn meaningful multi-modal representations and that scaling to the full dataset in Phase~2 is feasible.
+
+\footnotesize
+\begin{thebibliography}{12}
+
+\bibitem{radford2021clip}
+A.~Radford et al., ``Learning transferable visual models from natural language supervision,'' in \textit{Proc. ICML}, 2021, pp.~8748--8763.
+
+\bibitem{wen2024vlm}
+C.~Wen, Y.~Hu, X.~Li, Z.~Yuan, and X.~Zhu, ``Vision-Language Models in Remote Sensing: Current progress and future trends,'' \textit{IEEE Geosci. Remote Sens. Mag.}, vol.~12, pp.~32--66, 2024.
+
+\bibitem{liu2024remoteclip}
+F.~Liu, D.~Chen, Z.~Guan, X.~Zhou, J.~Zhu, and J.~Zhou, ``RemoteCLIP: A Vision Language Foundation Model for Remote Sensing,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~62, pp.~1--16, 2024.
+
+\bibitem{li2023rsclip}
+X.~Li, C.~Wen, Y.~Hu, and N.~Zhou, ``RS-CLIP: Zero shot remote sensing scene classification via contrastive vision-language supervision,'' \textit{Int. J. Appl. Earth Obs. Geoinformation}, vol.~124, p.~103497, 2023.
+
+\bibitem{zhang2024earthgpt}
+W.~Zhang, M.~Cai, T.~Zhang, Z.~Yin, and X.~Mao, ``EarthGPT: A Universal Multimodal Large Language Model for Multisensor Image Comprehension in Remote Sensing Domain,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~62, pp.~1--20, 2024.
+
+\bibitem{wang2025ringmogpt}
+P.~Wang et al., ``RingMoGPT: A Unified Remote Sensing Foundation Model for Vision, Language, and Grounded Tasks,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~63, pp.~1--20, 2025.
+
+\bibitem{bazi2022bimodal}
+Y.~Bazi, M.~M.~Al~Rahhal, M.~L.~Mekhalfi, M.~Zuair, and F.~Melgani, ``Bi-Modal Transformer-Based Approach for Visual Question Answering in Remote Sensing Imagery,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~60, pp.~1--11, 2022.
+
+\bibitem{lan2024grounding}
+M.~Lan, F.~Rong, H.~Jiao, Z.~Gao, and L.~Zhang, ``Language Query-Based Transformer With Multiscale Cross-Modal Alignment for Visual Grounding on Remote Sensing Images,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~62, pp.~1--13, 2024.
+
+\bibitem{zhang2024segclip}
+S.~Zhang, B.~Zhang, Y.~Wu, H.~Zhou, and J.~Jiang, ``SegCLIP: Multimodal Visual-Language and Prompt Learning for High-Resolution Remote Sensing Semantic Segmentation,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~62, pp.~1--16, 2024.
+
+\bibitem{wang2024metasegnet}
+L.~Wang, S.~Dong, Y.~Chen, X.~Meng, S.~Fang, and S.~Fei, ``MetaSegNet: Metadata-Collaborative Vision-Language Representation Learning for Semantic Segmentation of Remote Sensing Images,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol.~62, pp.~1--11, 2024.
+
+\bibitem{chen2024sharegpt4v}
+L.~Chen et al., ``ShareGPT4V: Improving Large Multi-Modal Models with Better Captions,'' in \textit{Proc. ECCV}, 2024, pp.~370--387.
+
+\bibitem{caglar2026aras400k}
+M.~Caglar, ``ARAS400K Remote Sensing Dataset,'' Zenodo, 2026. [Online]. Available: https://zenodo.org/records/18890661
+
+\end{thebibliography}
+
+\end{document}
