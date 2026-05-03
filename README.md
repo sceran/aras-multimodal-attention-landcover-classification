@@ -42,8 +42,6 @@ cells/                      # Colab-compatible cell scripts
 ├── 03_backbone_ablation.py # Vanilla CLIP vs RemoteCLIP
 ├── 04_fusion_variants.py   # Add FiLM and Gated fusion modules
 └── 05_pathB_segmentation.py# Preliminary patch-level segmentation
-memory-bank/                # Development log, architecture notes, session logs
-└── sessions/
 report/                     # Phase-2 IEEE-format report (LaTeX, to follow)
 ```
 
