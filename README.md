@@ -35,15 +35,29 @@ LLM-generated caption strategies.
 ## Repository layout
 
 ```
-cells/                      # Colab-compatible cell scripts
+di725_phase2.ipynb          # Main notebook with all cell outputs visible
+cells/                      # Source-of-truth Colab-compatible cell scripts
 ├── 00_health_check.py      # Verify session state
 ├── 01_patch_features.py    # Extract patch-level RemoteCLIP image features
 ├── 02_pathA_multilabel.py  # Multi-label classification, 11 conds × 3 seeds
 ├── 03_backbone_ablation.py # Vanilla CLIP vs RemoteCLIP
 ├── 04_fusion_variants.py   # Add FiLM and Gated fusion modules
-└── 05_pathB_segmentation.py# Preliminary patch-level segmentation
+├── 05_pathB_segmentation.py# Preliminary patch-level segmentation
+└── 06_analysis_figures.py  # Aggregate JSONs into report-ready figures
 report/                     # Phase-2 IEEE-format report (LaTeX, to follow)
 ```
+
+## Tracked experiments (Weights & Biases)
+
+All training runs are logged publicly. Each run has full per-epoch metrics,
+hyperparameters, and tags by seed / fusion type / caption strategy:
+
+| Project | Contents |
+|---|---|
+| [di725-phase2-sanity](https://wandb.ai/sceran/di725-phase2-sanity) | Initial 8 baselines used to motivate multi-label as the target task |
+| [di725-phase2-main](https://wandb.ai/sceran/di725-phase2-main) | Path A: 33 multi-seed runs (image-only / late / CA × 5 captions) + 30 fusion variant runs (FiLM, Gated) |
+| [di725-phase2-backbone-vanilla](https://wandb.ai/sceran/di725-phase2-backbone-vanilla) | Vanilla CLIP backbone ablation, 33 runs |
+| [di725-phase2-seg](https://wandb.ai/sceran/di725-phase2-seg) | Path B preliminary segmentation, 21 runs |
 
 ## Reproducing the experiments
 
@@ -62,8 +76,7 @@ report/                     # Phase-2 IEEE-format report (LaTeX, to follow)
    5. `04_fusion_variants.py` — add FiLM + Gated fusion modules.
    6. `05_pathB_segmentation.py` — preliminary segmentation extension.
 
-All experiments log to Weights & Biases project `di725-phase2-main` (and
-`di725-phase2-backbone-vanilla`, `di725-phase2-seg`).
+All training runs log to the Weights & Biases projects listed above.
 
 ## Method summary
 
