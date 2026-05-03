@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large feature caches and model checkpoints (regenerated on Drive)
+*.pt
+*.pth
+*.npy
+*.safetensors
+
+# Wandb local logs
+wandb/
+
+# Local / private course materials
+phase1-feedback-and-notes-for-phase2.md
+DI 725 Syllabus 2026.pdf
+
+# Editor / virtualenv
+.vscode/
+.idea/
+.venv/
+venv/
+.env
+.python-version
+
+memory-bank/
