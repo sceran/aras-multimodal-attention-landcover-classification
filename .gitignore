@@ -31,4 +31,12 @@ venv/
 .python-version
 
 memory-bank/
-report.zip
+
+# Zip bundles and backups
+*.zip
+*.ipynb.bak
+
+# Phase-3 internal scratch
+phase3_bundle/
+pre-run-notebook/
+sent/
